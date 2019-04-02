@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    {{msg}}
+    <button>查询 mongo</button>
+
+    <script>
+        const log = console.log.bind()
+
+        $('button').on('click', function(e) {
+            log('被点击')
+            $.get('http://127.0.0.1:4000/photo/type', function(res) {
+                log('这是给出的响应:', res)
+            })
+        })
+
+    </script>
+</body>
+</html>

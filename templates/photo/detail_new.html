@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>这是资讯的 detail 页面</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
+
+    <style>
+        .pic-ceil img {
+            cursor: pointer;
+        }
+
+        .pop-pic {
+            /*position: absolute;*/
+            /*top: 1100px;*/
+            /*left: 50px;*/
+            position: relative;
+            /*width: 1000px;*/
+            /*height: 1000px;*/
+            z-index: 1;
+            margin: 50px auto;
+            /*overflow: hidden;*/
+            /*border: 10px solid palevioletred;*/
+        }
+
+        @media (min-width: 0px) {
+            .pop-pic {
+                margin-top: 150px;
+            }
+        }
+
+        @media (min-width: 588px) {
+            .pop-pic {
+                margin-top: 100px;
+            }
+        }
+
+
+        /*@media (min-width: 768px) {*/
+        /*.pop-pic {*/
+        /*margin-top: 100px;*/
+        /*}*/
+        /*}*/
+
+
+        /*@media (min-width: 992px) {*/
+        /*.pop-pic {*/
+        /*margin-top: 100px;*/
+        /*}*/
+        /*}*/
+
+        /*@media (min-width: 1200px) {*/
+        /*.pop-pic {*/
+        /*margin-top: 100px;*/
+        /*}*/
+        /*}*/
+
+
+
+
+        .close {
+            font-size: 35px;
+            color: white;
+            opacity: 1;
+            left: 300px;
+            position: absolute;
+        }
+
+        .close:hover {
+            color: white;
+            opacity: 0.8;
+        }
+
+        .xxx {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            background-color: #2b3741;
+        }
+
+        /*.prev-pic, .next-pic{*/
+            /*!*position: absolute;*!*/
+            /*!*top: 50%;*!*/
+            /*!*margin-top: -120px;*!*/
+            /*z-index: 2;*/
+            /*!*line-height: 100px;*!*/
+            /*position: absolute;*/
+            /*top: 0px*/
+        /*}*/
+
+        .prev-pic, .next-pic{
+            font-size: 30px;
+            color: #ffff00;
+            line-height: 100px;
+            z-index: 100;
+        }
+
+
+        .next-pic {
+            /*position: absolute;*/
+            right: 30px;
+        }
+
+        .pic-mains {
+            height: 150px;
+            width: 150px;
+            /*border: 1px solid black;*/
+            box-shadow:  1px 2px 3px grey;
+            /*margin: 10px;*/
+        }
+
+        .wrap img {
+            margin-bottom: 30px;
+        }
+
+        .btns a {
+            color: red;
+            font-size: 100px;
+            line-height: 450px;
+        }
+    </style>
+</head>
+<body>
+<!-- <h4>这是资讯的 detail 页面</h4>
+    <img src="/hotspot/cover/{{hotspot.path}}">
+    <br>
+    标题: {{hotspot.hotspot_title}}
+    <br>
+    内容: {{hotspot.hotspot_content}} -->
+<div class="container big-pic" style="display: none">
+    <!--<div class="btns">-->
+        <button class="close">x</button>
+        <!--<button class="prev-pic">&lt;</button>-->
+        <!--<button class="next-pic">&gt;</button>-->
+    <!--</div>-->
+    <div class="row">
+        <div class="">
+            <!--id="myCarousel" class="carousel slide"-->
+            <div class="pop-pic carousel slide" id="myCarousel">
+
+            </div>
+            <a class="prev-pic carousel-control left">&lt;</a>
+            <a class="next-pic carousel-control right">&gt;</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="container pic-main" style="top: 100px; position: relative">
+    <a href="/photo/"><p class="text-center">返回首页</p></a>
+    <!-- cover -->
+    <div class="row">
+        <!--<div class="col-md-2 col-sm-2 col-xs-2"></div>-->
+        <img src="/photo/cover/{{photo.cover_path}}" class='img-responsive col-md-4 col-sm-4 col-xs-4'>
+        <!--<div class="col-md-2 col-xs-2 col-sm-2"></div>-->
+        <h3>{{photo.photo_title}}</h3>
+        <br>
+        <h4>{{photo.photo_info}}</h4>
+    </div>
+    <hr>
+
+    <!-- ceil -->
+
+
+
+    <div class="container">
+        <div class="row pic-ceil" style="margin-bottom: 150px">
+            <div class="spot-content">
+                <div class="row">
+                    <h4 class='wrap'>
+                        {{photo.photo_content | safe}}
+
+                    </h4>
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+    <hr>
+
+
+
+    <!--<p class="text-center foot-text">3mwy</p>-->
+</div>
+
+
+
+
+
+
+<script src="/static/js/vin.js"></script>
+<script>
+
+    var [x, y] = [0, 0]
+
+    var if_response = true
+
+    const shows = (innerhtml) => {
+        //
+        // log('图片中心的高度：', pic_height_big)
+
+        $('.carousel-control').css('line-height', 600 + 'px')
+
+
+        $('.ceils img').removeClass('pic-mains')
+        $('.pop-pic').html(innerhtml)
+        $('.pop-pic img').addClass('center-block')
+
+
+        //
+        // const pic_height_big = $('.pop-pic img').height()
+        // log('pic_height_big ：', pic_height_big)
+        // log('当前的高度：', $('.prev-pic').css('top'))
+        // $('.prev-pic').css('top', 100 + pic_height_big/2 + 'px')
+        // // log('当前的高度：', $('.prev-pic').css('top'))
+
+        $('.big-pic').show()
+        $('body').addClass('xxx')
+        log('当前高度:', $('.pic-ceil img').height())
+        $('.pic-main').addClass('hidden-xs hidden-sm hidden-md hidden-lg')
+    }
+
+
+    const show_pic = () => {
+        $('.pic-ceil img').on('click', function(e) {
+            // 覆盖内联样式
+            $('.ceils img').attr('style', 'height:400px; width:700px')
+
+
+
+            scrollTo(0, 0)
+            var [x, y] = [e.clientX, e.clientY]
+            // const img_text = $(this).parent('.col-md-2').html()
+            $(this).removeClass('pic-mains')
+            const img_text = $(this).closest('.ceils').children().eq(0).html()
+            // const img_text = $(this).parent('.ceils').html()
+            // log('img_text:', $(this).closest('.ceils').children().eq(0).html())
+            shows(img_text)
+        })
+    }
+
+
+    const close_pic = () => {
+        $('.close').on('click', function(e) {
+            $('.big-pic').hide()
+            $('body').removeClass('xxx')
+            $('.ceils img').addClass('pic-mains')
+            $('.ceils img').attr('style', '')
+
+            log('attr style', $('.ceils img').attr('style')
+            )
+            $('.pic-main').removeClass('hidden-xs hidden-sm hidden-md hidden-lg')
+            scrollTo(x + 500, y + 500)
+        })
+    }
+
+
+    const find_current_pos = (current_pic, all_pic) => {
+        const pic_number = all_pic.length
+        for (var i = 0; i < all_pic.length; i++) {
+            var pic = all_pic[i]
+            if ($(pic).attr('src') == current_pic) {
+                return i
+            }
+        }
+        return -1
+
+    }
+
+
+    const slide_pic = () => {
+        const all_pic = $('.wrap img')
+        const l = $('.wrap img').length
+
+
+        $('.prev-pic').on('click', function(e) {
+            // $('.ceils img').attr('style', '')
+            $('.ceils img').attr('style', 'height:400px; width:700px')
+
+
+            const current_pic = $('.pop-pic img').attr('src')
+            const current_pic_pos = find_current_pos(current_pic, all_pic)
+            const prev_pos = (current_pic_pos + l - 1) % l
+            const prev_pic = all_pic.eq(prev_pos).parent().html()
+            shows(prev_pic)
+        })
+
+        $('.next-pic').on('click', function(e) {
+            // $('.ceils img').attr('style', '')
+            $('.ceils img').attr('style', 'height:400px; width:700px')
+
+
+            const current_pic = $('.pop-pic img').attr('src')
+            const current_pic_pos = find_current_pos(current_pic, all_pic)
+            const next_pos = (current_pic_pos + l + 1) % l
+            const next_pic = all_pic.eq(next_pos).parent().html()
+            shows(next_pic)
+        })
+
+    }
+
+
+    const show_big_pic = () => {
+
+        show_pic()
+        close_pic()
+        slide_pic()
+
+
+    }
+
+    const resize_pic = () => {
+        $(window).resize(function(e) {
+            log('resize')
+            const pic_height = $('.pic-ceil img').height()
+            const pic_width = $('.pic-ceil img').width()
+            $('.pic-ceil img').height(pic_width)
+
+            const pic_height_big = $('.pop-pic img').height()
+            const pic_width_big = $('.pop-pic img').width()
+            $('.pop-pic img').height(pic_width_big * 5/7)
+
+
+            // $('.prev-pic').css('top', 100 + pic_height_big/2 + 'px')
+            $('.carousel-control').css('line-height', 500 + 'px')
+            log('当前高度', $('.carousel-control').css('line-height'))
+
+
+        })
+
+    }
+
+
+
+
+
+    const __main = () => {
+        show_big_pic()
+        resize_pic()
+    }
+
+    __main()
+</script>
+</body>
+</html>

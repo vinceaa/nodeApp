@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>这是资讯的 detail 页面</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
+
+</head>
+<body>
+    <!-- <h4>这是资讯的 detail 页面</h4>
+        <img src="/hotspot/cover/{{hotspot.path}}">
+        <br>
+        标题: {{hotspot.hotspot_title}}
+        <br>
+        内容: {{hotspot.hotspot_content}} -->
+    <div class="container" style="top: 100px; position: relative">
+        <a href="/hotspot/"><p class="text-center">返回首页</p></a>
+        <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-2"></div>
+            <img src="/hotspot/cover/{{hotspot.path}}" class='img-responsive col-md-8 col-sm-8 col-xs-8'>
+            <div class="col-md-2 col-xs-2 col-sm-2"></div>
+        </div>
+        <div class="row" style="margin-bottom: 150px">
+            <div class="col-md-2 col-sm-2 col-xs-2"></div>
+            <div class="col-md-8 col-sm-8 col-xs-8">
+                <div class="spot-header">
+                    <h2 class='text-center'>{{hotspot.hotspot_title | safe}}</h2>
+                </div>
+                <div class='text-right hot-title'>{{hotspot.spt_time | safe}}</div>
+                <hr>
+                <div class="spot-content">
+                    <h4 class=''>{{hotspot.hotspot_content | safe}}</h4>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-2 col-sm-2"></div>
+        </div>
+        <hr>
+        <p class="text-center foot-text">3mwy</p>
+    </div>
+
+
+
+</body>
+</html>

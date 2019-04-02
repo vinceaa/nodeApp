@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资讯管理</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+</head>
+<body>
+    <h3>资讯管理</h3>
+    <a href="/hotspot">资讯首页</a>
+    <form action="/hotspot/add" method="post">
+        <input type="input" name="hotspot_title" placeholder="请输入资讯标题">
+        <select name="hotspot_type">
+            <option value="1">热门资讯</option>
+            <option value="0">普通资讯</option>
+        </select>
+        <hr>
+        <textarea name="hotspot_content"cols="30" rows="10" placeholder="请输入资讯内容"></textarea>
+        <button>新增一条资讯</button>
+    </form>
+    <hr>
+    <h4>载入所有的资讯</h4>
+    {% for hotspot in hotspots %}
+        {% if hotspot.hotspot_type == 1 %}
+            {% set type = '热门资讯' %}
+        {% else %}
+            {% set type = '普通资讯' %}
+    {% endif %}
+        <span class="label label-warning">{{ type }} </span>
+           {{ hotspot.hotspot_title }}
+        <a href="/hotspot/edit?hotspot_id={{hotspot._id}}">编辑</a>
+        <a href="/hotspot/delete?hotspot_id={{hotspot._id}}">删除</a>
+        <br>
+        <br>
+    {% endfor %}
+
+</body>
+</html>

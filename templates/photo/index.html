@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>相册管理</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Flamenco'>
+    <link rel='stylesheet prefetch' href='http://demo.neutrinoboy.jp/jquery-markdown/styles/markdown.css'>
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/m1/css/style.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <style>
+        .actives {
+            width: 50px;
+            height: 20px;
+            text-align: center;
+            border: 1px solid beige;
+            background-color: lightcoral;
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+        .hotspot-head span {
+            color: #000;
+            margin-left: 5px;
+        }
+
+        .hotspot-head {
+            margin-bottom: 8px;
+        }
+
+        .hotspot-ceil span {
+            margin-right: 8px;
+        }
+
+        .bds {
+            /*border: 1px solid black;*/
+            /*height: 220px;*/
+            /*margin: 15px;*/
+            padding: 0px;
+            margin: 10px;
+        }
+
+        .pic-main {
+            height: 150px;
+            width: 150px;
+            /*border: 1px solid black;*/
+            box-shadow:  1px 2px 3px grey;
+            /*margin: 10px;*/
+        }
+
+        .bottom-info,  bottom-info1 {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            padding: 10px;
+            position: relative;
+        }
+
+        .bottom-info {
+            margin-top: -31px;
+            margin-left: 24px;
+            width: 130px;
+            position: relative;
+            top: 10px;
+            top: 30px;
+    
+            color: #735f92;
+        }
+
+        .bottom-info1 {
+            margin-top: -14px;
+            margin-left: 26px;
+            width: 146px;
+            position: relative;
+            box-shadow: 1px 6px 20px grey;
+            height: 28px;
+            top: -9px;
+            z-index: -1;
+        }
+
+        .box-lg, .box-small {
+            box-shadow: 1px 2px 3px grey;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .box-lg {
+            width: 149px;
+            background-color: white;
+            height: 23px;
+            z-index: 1;
+            /* border: 1px solid black; */
+            position: relative;
+        }
+
+        .box-small {
+            width: 142px;
+            height: 25px;
+            /* border: 1px solid black; */
+            position: relative;
+            z-index: -1;
+            top: -19px;
+            left: 5px;
+            background-color: white;
+        }
+
+        .box-main {
+            position: absolute;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <a href="/index">首页</a>
+    <a href="/photo/admin">相册管理</a>
+    <a href="/photo/type">分类管理</a>
+    <h3>相册管理</h3>
+
+
+    <hr>
+    <div class="hotspot-main">
+        <div class="hotspot-head">
+            <span class="text-left">分类浏览</span>
+            <a href="/photo?tab=all" class="{{actives}} text-left"><span>全部</span></a>
+            {% for board in pboards%}
+            {% if board.board_content == pboard_type %}
+            {% set type = 'actives'%}
+            {% else %}
+            {% set type = '' %}
+            {% endif %}
+            <a href="/photo?tab={{board.board_content}}" class="{{type}}"><span>{{board.board_content}}</span></a>
+            {% endfor %}
+        </div>
+
+        <!-- 相册内容区域 -->
+        <div class="container">
+            <div class="row">
+                {% for photo in photos %}
+                <div class="col-md-2 col-sm-3 col-xs-5 bds">
+                    <a href="/photo/detail/{{photo.photo._id}}">
+                        <img src="/photo/cover/{{photo.photo.cover_path}}" class="pic-main img-responsive img-thumbnail">
+                        <p class="text-left bottom-info">{{ photo.photo.photo_title }}</p>
+                    </a>
+                    <!--<div class="box-main">-->
+                        <!--<div class="box-lg">-->
+                            <!--<p class="text-left">{{ photo.photo.photo_title }}</p>-->
+                        <!--</div>-->
+                        <!--<div class="box-small">-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+
+        <!-- 分页 -->
+        <ul class="pagination pagination-sm">
+            <li>
+                <a href="/photo?group_id={{  pre_id  }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% for i in page_number %}
+            {% if i - 1 == group_id %}
+            {% set active = 'active' %}
+            {% else %}
+            {% set active = '' %}
+            {% endif %}
+            <li class={{active}}><a href="/photo?group_id={{i - 1}}">{{i}}</a></li>
+            {% endfor %}
+            <li>
+                <a href="/photo?&group_id={{  next_id  }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='http://demo.neutrinoboy.jp/jquery-markdown/libs/jquery/plugins/jquery.markdown.js'></script>
+    <script  src="/static/m1/js/index.js"></script>
+    <script  src="/static/js/vin.js"></script>
+    <script>
+
+
+        //
+
+
+
+
+
+
+
+
+        const test = () => {
+            $(window).resize(function(e) {
+                // log('当前屏幕的宽和高：', $(window).width(), $(window).height())
+                // log('图片目前的宽和高:', $('img').width(), $('img').height())
+                const pic_height = $('img').height()
+                const pic_width = $('img').width()
+                // log('pic_height:', pic_height)
+                // log('pic_width:', pic_width)
+                $('img').height(pic_width)
+            })
+        }
+
+
+
+
+        const __main = () => {
+            test()
+        }
+
+
+        __main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

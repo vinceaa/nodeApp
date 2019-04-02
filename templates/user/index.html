@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+</head>
+<body>
+    <h4>用户界面！</h4>
+
+    <div class="input-group">
+
+        <form action="/user/register" method="post">
+            <input type="input" class="form-control" name='username' placeholder="请输入用户名">
+            <br>
+            <input type="input" class="form-control" name='password' placeholder="请输入密码">
+            <br>
+            <button class="btn btn-info">注册</button>
+        </form>
+        {{ infor }}
+        <br>
+        <a href="/user/login">返回登录</a>
+    </div>
+</body>
+</html>

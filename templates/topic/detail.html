@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>topic detail</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+</head>
+<body>
+        <h4>topic detail!</h4>
+        <a href="/topic" class="btn btn-success">返回列表</a>
+        <br>
+        作者： <a href="/user/{{topic.get_author.id}}">{{topic.get_author.username}}</a>
+        <br>
+        发布时间： {{ topic.topic.spt_time  }}
+        <br>
+
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">标题：{{topic.topic.topic_title}}</h3>
+            </div>
+            <div class="panel-body">
+                内容：{{topic.topic.topic_content | safe}}
+            </div>
+        </div>
+        <!--标题： {{topic.topic.topic_title}}-->
+        <!--<br>-->
+        <!--内容： {{topic.topic.topic_content}}-->
+        <hr>
+        <div class="reply-main">
+            {% for reply in replys %}
+
+            <div class="reply-ceil">
+                <h5>
+                    <a href="/user/{{reply.get_replyer._id}}"><img src="/user/avatar/{{reply.get_replyer.path}}" style="width:35px; height:35px; border-radius: 5px"></a>
+                    第 <span class="floor_number">{{loop.index}}</span> 楼 <a href="/user/{{reply.get_replyer._id}}">{{  reply.get_replyer.username }}</a> 说: {{  reply.reply.reply_content  }}
+                    {{ reply.pass_time}}
+                    <a class="choose-reply">回复</a>
+                    <hr>
+                </h5>
+                <!--id: {{reply.reply._id}}-->
+                <div class="reply-to-main">
+                    回复信息：
+                    <div class="reply-list">
+                        {% for reply_to in reply.reply.reply_to_list %}
+                        {{reply_to.replyer}} ：{{reply_to.reply_to_content}}
+                        <br>
+                        {% endfor%}
+                    </div>
+                    <input hidden class='reply_id' name='reply_id' value="{{reply.reply._id}}">
+                    <input class='reply_to_content' name='reply_to_content' placeholder="回复{{  reply.get_replyer.username }}" style="margin-left: 300px;">
+                    <button class="send_reply_to">发送</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <br>
+
+
+        <!--<form action="/reply" method="post" class="center-block" class="">-->
+            <!--<input hidden type="input" name="topic_id" value="{{topic.topic.id}}">-->
+            <!--<input hidden type="input" name="author_id" value="{{topic.get_author.id}}">-->
+            <!--<br>-->
+            <!--<textarea class="form-control" name="reply_content" cols="30" rows="10" style="width:68%"></textarea>-->
+            <!--<br>-->
+            <!--<button class="btn btn-default navbar-btn">回复</button>-->
+        <!--</form>-->
+
+
+        <input class="reply-topic-id" hidden type="input" name="topic_id" value="{{topic.topic.id}}">
+        <input class="reply-topic-author-id" hidden type="input" name="author_id" value="{{topic.get_author.id}}">
+        <br>
+        <textarea class="form-control" name="reply_content" cols="30" rows="10" style="width:68%"></textarea>
+        <br>
+        <button class="reply-btn btn btn-default navbar-btn">回复</button>
+
+
+        <script src="/static/js/vin.js"></script>
+        <script>
+
+             const templates = (reply) => {
+                 if ($('.reply-main .floor_number').length == 0) {
+                     var floor_number = 0
+                 } else {
+                     var floor_number = parseInt($('.reply-main .floor_number').eq(-1).html())
+                 }
+                 const t =
+                     `<div class="reply-ceil">
+                 <h5>
+                     <a href="/user/${reply.get_replyer._id}"><img src="/user/avatar/${reply.get_replyer.path}" style="width:35px; height:35px; border-radius: 5px"></a>
+                     -第 <span class="floor_number">${floor_number + 1}</span> 楼 <a href="/user/${reply.get_replyer._id}">${  reply.get_replyer.username }</a> 说: ${  reply.reply.reply_content  }
+                     ${ reply.pass_time}
+                     <hr>
+                 </h5>
+             </div>
+                 `
+                 return t
+
+             }
+
+             const templates_reply_to = (reply_to_list) => {
+                 const replyer = reply_to_list.replyer
+                 const reply_to_content = reply_to_list.reply_to_content
+                 const t = `
+                     ${replyer} ：${reply_to_content}
+                     <br>
+                 `
+                 return t
+
+             }
+
+            const add = () => {
+                const element = $('.reply-btn')
+                element.on('click', function(e) {
+                    const topic_id = $('.reply-topic-id').val()
+                    const author_id = $('.reply-topic-author-id').val()
+                    const reply_content = $('textarea').val()
+                    const form = {
+                        topic_id: topic_id,
+                        author_id: author_id,
+                        reply_content: reply_content,
+                    }
+                    const data = JSON.stringify(form)
+                    const request = {
+                        method: 'POST',
+                        url: '/reply/api',
+                        contentType: 'application/json',
+                        data: data,
+                        callback: (r) => {
+                            log('这是给出的 r:', r)
+                            $('textarea').val('')
+                            const d = JSON.parse(r)
+                            log('这是给出的 parse 后的 r:', d)
+                            const template = templates(d)
+                            $('.reply-main').append(template)
+
+
+                        }
+                    }
+                    ajax(request)
+                })
+            }
+
+
+
+             const reply_to = () => {
+                 const element = $('.send_reply_to')
+                 element.on('click', function(e) {
+                     // log('$this', $(this).prev().prev().val())
+                     const reply_to_content = $(this).prev().val()
+                     const reply_id = $(this).prev().prev().val()
+                     const form = {
+                         reply_to_content,
+                         reply_id,
+                     }
+                     log('准备发送的数据：', form)
+                     const data = JSON.stringify(form)
+                     const request = {
+                         method: 'POST',
+                         url: '/reply/api/replyto',
+                         contentType: 'application/json',
+                         data: data,
+                         callback: (r) => {
+                             // log('这是给出的响应:', JSON.parse(r))
+                             const reply_to_list = JSON.parse(r).reply_to_list.slice(-1)[0]
+                             log('reply_to_list:', reply_to_list)
+                             const template = templates_reply_to(reply_to_list)
+                             $('.reply_to_content').val('')
+                             $(this).parent().children('.reply-list').append(template)
+
+                         }
+                     }
+                     ajax(request)
+                 })
+             }
+
+            const __main = () => {
+                add()
+                reply_to()
+
+            }
+
+
+            __main()
+
+        </script>
+
+</body>
+</html>

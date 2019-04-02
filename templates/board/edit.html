@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>board edit</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+</head>
+<body>
+    <h4>board edit!</h4>
+    <form action="/board/update" method="post">
+        <input hidden type="input" name="board_id" value="{{board_id}}">
+        <input type="input" name="board_content">
+        <button>修改</button>
+    </form>
+</body>
+</html>

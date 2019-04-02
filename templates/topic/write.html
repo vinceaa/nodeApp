@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>topic write</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+</head>
+<body>
+    <h4>topic write!</h4>
+    <form action="/topic/add" method="post">
+
+
+
+        选择板块：<select name="board_id" class="btn btn-default btn-xs dropdown-toggle">
+                    {% for board in boards %}
+                        <option value="{{board.id}}">{{ board.board_content}}</option>
+                    {% endfor %}
+            </select>
+        <br>
+
+        </div>
+
+        <br>
+        <input class="form-control" type="input" name="topic_title" placeholder="请输入标题">
+        <br>
+        <textarea class="form-control" name="topic_content" cols="30" rows="10"></textarea>
+        <br>
+        <button class="btn btn-info">发表</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>真正的首页!</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body class='infor-body'>
+
+
+<!-- head -->
+<header class='infor-header'>
+    <div class="infor-head-main">
+        <h2>资讯</h2>
+        <h5>时下流行资讯</h5>
+    </div>
+</header>
+
+
+
+<!-- nav 区域 -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand logo"><img src="img/logo.png" alt="3mwy"></a>
+            <!-- 这里的 data-target="#navbar-collapse" 指向下面， 当缩小时对应的 target 会自动隐藏并编程 headers -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/index"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+                <li class="active"><a href="/hotspot"><span class="glyphicon glyphicon-list"></span> 资讯</a></li>
+                <li><a href="/topic"><span class="glyphicon glyphicon-fire"></span> 论坛</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-fire"></span> 案例</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> 关于</a></li>
+            </ul>
+
+
+
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8">
+            <!-- 下面如果用 container 就会占满屏幕，可以不用或者使用 container-fluid 来代替 -->
+            <!-- container-fluid 的好处是可以增加一点空隙 -->
+            <div class="container-fluid">
+                <div class="row">
+
+                    {% for hotspot in hotspots %}
+
+
+                        <div class="col-md-12 infor-main">
+                            <div class="info-pic col-md-5 col-xs-5">
+                                <img src="/hotspot/cover/{{hotspot.path}}" class='img-responsive'>
+                            </div>
+                            <div class="info-text col-md-6 col-xs-5">
+                                <div class="info-head line-limit-length">
+                                    <a href="/hotspot/detail/{{hotspot._id}}"><h3>{{  hotspot.hotspot_title | safe }}</h3></a>
+                                </div>
+                                <div class="info-content hidden-xs">
+                                    <a href="/hotspot/detail/{{hotspot._id}}"><span>{{  hotspot.hotspot_content | safe }}</span></a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    {% endfor %}
+
+                    <div class="col-md-12 spot-group">
+                        <ul class="pagination pagination-sm">
+                            <li>
+                                <a href="/hotspot?group_id={{  pre_id  }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% for i in page_number %}
+                            {% if loop.index - 1 == group_id %}
+                            {% set active = 'active' %}
+                            {% else %}
+                            {% set active = '' %}
+                            {% endif %}
+                            <li class={{active}}><a href="/hotspot?group_id={{loop.index - 1}}">{{loop.index}}</a></li>
+                            {% endfor %}
+                            <li>
+                                <a href="/hotspot?&group_id={{  next_id  }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4 hidden-sm infor-side">
+            <div class="row">
+                <div class="side-head">
+                    <h3>热门资讯</h3>
+                </div>
+                {% for hotspot in hotspots_hot %}
+
+                <div class="col-md-5 side-pic">
+                    <img src="/hotspot/cover/{{hotspot.path}}" alt="" />
+                </div>
+
+                <div class="col-md-7 side-infor">
+                    <a href="/hotspot/detail/{{hotspot._id}}"><h4>{{  hotspot.hotspot_title | safe }}</h4></a>
+                    <a href="/hotspot/detail/{{hotspot._id}}"><span>{{  hotspot.hotspot_content | safe }}</span></a>
+                </div>
+
+                {% endfor %}
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+<!-- footer -->
+<footer id='footer'>
+    <hr>
+    <div class="container-fluid text-center">
+        <span>3mwy | 合作事宜 | 关于我们</span>
+        <br>
+        <span>2017-2018 . Powered by Bootstrap.</span>
+    </div>
+</footer>
+
+
+<div class="container">
+    <div class="row">
+        <img src="/static/img/1.jog" alt="">
+    </div>
+</div>
+
+</body>
+</html>

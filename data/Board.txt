@@ -1,0 +1,18 @@
+[
+  {
+    "id": 2,
+    "board_content": "嘎嘎"
+  },
+  {
+    "id": 3,
+    "board_content": "测试"
+  },
+  {
+    "id": 4,
+    "board_content": "呵呵"
+  },
+  {
+    "id": 5,
+    "board_content": "恩行嗯"
+  }
+]

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>board edit</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Flamenco'>
+    <link rel='stylesheet prefetch' href='http://demo.neutrinoboy.jp/jquery-markdown/styles/markdown.css'>
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/m1/css/style.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+<body>
+    <h4>board edit!</h4>
+    <form action="/photo/type/update" method="post">
+        <input hidden type="input" name="board_id" value="{{board_id}}">
+        <input type="input" name="board_content">
+        <button>修改</button>
+    </form>
+
+
+
+</body>
+</html>

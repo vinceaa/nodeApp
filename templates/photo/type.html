@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>board index</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Flamenco'>
+    <link rel='stylesheet prefetch' href='http://demo.neutrinoboy.jp/jquery-markdown/styles/markdown.css'>
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/m1/css/style.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+<h4>这是 photo 分类管理！</h4>
+<!--<form action="/board/add" method="post">-->
+<!--<input type="input" name="board_content" placeholder="请输入你要添加的板块">-->
+<!--<button>新增一个板块</button>-->
+<!--</form>-->
+
+<!-- ajax 增加数据 -->
+<div class="add-main">
+    <div class="add">
+        <input class='add-input' type="input" name="board_content" placeholder="请输入你要添加的板块">
+        <button class="btn btn-add">新增一个板块</button>
+    </div>
+</div>
+<ul>
+    <div class="load">
+        {% for board in boards %}
+        <div class="load-cell">
+            <li class="list-unstyled">{{ board.board_content }}
+                <!--<a class="remove-main" href="/board/delete?board_id={{board.id}}"">删除</a>-->
+                <a class="remove-main" data-id="{{board._id}}">删除</a>
+                <a href="/photo/type/edit?board_id={{board._id}}">编辑</a></li>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+
+</ul>
+<a href="/">返回主页</a>
+<!--<a href="/topic/write">发表话题</a>-->
+<script src="/static/js/vin.js"></script>
+<script>
+
+    const templates = (board) => {
+        const t =
+            `<div class="load-cell">
+                <li>${board.board_content}
+                    <a class="remove-main" data-id="${board._id}">删除</a>
+                    <a href="/photo/type/edit?board_id=${board._id}">编辑</a>
+                </li>
+              <br>
+            </div>`
+        return t
+
+    }
+
+    const add = () => {
+        const element = $('.btn-add')
+        element.on('click', function(e) {
+            const board_content = $('.add-input').val()
+            const form = {
+                board_content: board_content,
+            }
+            const data = JSON.stringify(form)
+            const request = {
+                method: 'POST',
+                url: '/photo/type/api/add',
+                contentType: 'application/json',
+                data: data,
+                callback: (r) => {
+                    log('这是回头给出的响应:', JSON.parse(r))
+                    const d = JSON.parse(r)
+                    const template = templates(d)
+                    $('.load').append(template)
+                    $('.add-input').val('')
+
+                }
+            }
+            ajax(request)
+        })
+    }
+
+
+    const remove = () => {
+        const element = $('.remove-main')
+        $('.load').on('click', '.remove-main', function(e) {
+            log('删除被点击')
+            const board_id = $(this).data('id')
+            log('board_id:', board_id)
+            const request = {
+                method: 'GET',
+                url: `/photo/type/api/delete?board_id=${board_id}`,
+                contentType: 'application/json',
+                callback: (r) => {
+                    log('这是回头给出的响应:', JSON.parse(r))
+                    const d = JSON.parse(r)
+                    $(this).closest('.load-cell').remove()
+                    $('.add-input').val('')
+                }
+            }
+            ajax(request)
+        })
+    }
+
+
+    const __main = () => {
+        add()
+        remove()
+    }
+
+
+    __main()
+
+</script>
+
+</body>
+</html>

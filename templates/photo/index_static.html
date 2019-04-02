@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <style>
+        .bds {
+            /*border: 1px solid black;*/
+            /*height: 220px;*/
+            /*margin: 15px;*/
+            padding: 0px;
+            margin: 10px;
+        }
+
+        .pic-main {
+            height: 150px;
+            width: 150px;
+            /*border: 1px solid black;*/
+            box-shadow:  1px 2px 3px grey;
+            /*margin: 10px;*/
+        }
+
+        
+
+
+    </style>
+</head>
+<body>
+<h3 class="text-center">photo 静态页面测试</h3>
+<a href="/photo/admin">相册管理</a>
+    <hr>
+    <div class="container" >
+        <div class="row">
+            <div class="col-md-2 col-sm-3 col-xs-5 bds">
+                <img src="/static/img/3.jpg" class="pic-main img-responsive">
+                <p>描述</p>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-5 bds">
+                <img src="/static/img/3.jpg" class="pic-main img-responsive">
+                <p>描述</p>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-5 bds">
+                <img src="/static/img/3.jpg" class="pic-main img-responsive">
+                <p>描述</p>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-5 bds">
+                <img src="/static/img/3.jpg" class="pic-main img-responsive">
+                <p>描述</p>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-5 bds">
+                <img src="/static/img/3.jpg" class="pic-main img-responsive">
+                <p>描述</p>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-5 bds">
+                <img src="/static/img/3.jpg" class="pic-main img-responsive">
+                <p>描述</p>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-5 bds">
+                <img src="/static/img/4.jpg" class="pic-main img-responsive">
+                <p>描述</p>
+            </div>
+        </div>
+
+
+
+
+        <hr>
+    </div>
+    <script src="/static/js/vin.js"></script>
+    <script>
+
+
+
+        const test = () => {
+            $(window).resize(function(e) {
+                // log('当前屏幕的宽和高：', $(window).width(), $(window).height())
+                // log('图片目前的宽和高:', $('img').width(), $('img').height())
+                const pic_height = $('img').height()
+                const pic_width = $('img').width()
+                // log('pic_height:', pic_height)
+                // log('pic_width:', pic_width)
+                $('img').height(pic_width)
+            })
+        }
+
+        const __main = () => {
+            test()
+        }
+
+        __main()
+    </script>
+
+</body>
+</html>

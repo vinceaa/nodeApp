@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hotspot edit</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Flamenco'>
+    <link rel='stylesheet prefetch' href='http://demo.neutrinoboy.jp/jquery-markdown/styles/markdown.css'>
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/m1/css/style.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <style>
+        form .form-control {
+            height: 400px;
+            width: 300px;
+        }
+
+        .upload-main-new {
+            position: relative;
+            top: 19px;
+            left: 104px;
+        }
+
+        .titles {
+            position: relative;
+            left: 64px;
+            top: 110px;
+        }
+    </style>
+</head>
+<body>
+
+    <h4>hotspot edit!</h4>
+    <a href="/hotspot/">资讯首页</a>
+    <br>
+    <img class="hotspot-cover" src="/hotspot/cover/{{hotspot.path}}" width="400px" height="300">
+    <!--<form action="/hotspot/upload" method="post" enctype="multipart/form-data">-->
+        <input type="input" hidden class="hotspot_id" name="hotspot_id" value="{{hotspot._id}}">
+        <!--<input type="file" name="file" class="upload_file" multiple/>-->
+        <br>
+
+        <label for="hotcover-add">Add Cover</label>
+        <input type="file" style="display: none" class="upload_file" id="hotcover-add" multiple>
+        <button class="btn uploads">上传资讯封面</button>
+    <!--</form>-->
+
+
+
+    <div class="titles">
+
+    <!--<form action="/hotspot/update" method="post">-->
+        <input hidden type="input" class="hotspot_id" name="hotspot_id" value="{{hotspot._id}}" >
+        <br>
+        <input type="input" name="hotspot_title" class="hotspot_title" value="{{hotspot.hotspot_title}}" placeholder="请输入修改的资讯标题">
+        <select class="hotspot_type" name="hotspot_type">
+            <option value="1">热门资讯</option>
+            <option value="0">普通资讯</option>
+        </select>
+        <hr>
+    </div>
+    <!--</form>-->
+
+
+    <!-- markdown -->
+
+    <div class="container">
+        <div class="row">
+            <div class="upload-main upload-main-new">
+
+                <label for="exampleInputFile">Add Pic</label>
+                <input type="file" class="add-pic-one" id="exampleInputFile" style="display: none;" multiple>
+                <button class="add-pic-one-button">上传</button>
+                <button class="change">修改</button>
+
+            </div>
+            <br>
+
+            <div class="markdown-wrapper">
+                <div class="markdown-text">
+                    <textarea class='mark-test' style="width: 330px; height: 500px;">{{hotspot.hotspot_content}}</textarea>
+                </div>
+                <div class="markdown"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='http://demo.neutrinoboy.jp/jquery-markdown/libs/jquery/plugins/jquery.markdown.js'></script>
+    <script  src="/static/m1/js/index.js"></script>
+    <script src="/static/js/vin.js"></script>
+    <script>
+
+        const upload = () => {
+            const element = $('.uploads')
+            element.on('click', function(event) {
+                // log('上传按钮被点击')
+                var hotspot_id = $('.hotspot_id').val()
+                var formData = new FormData()
+                // 这里貌似必须用原生的 selector 来获取 file
+                var file = e('.upload_file')
+                var multi_files = file.files
+                for (let file of multi_files) {
+                    formData.append('file', file)
+                }
+                // formData.append('file', file.files[0])
+                // formData.append('file', file.files[1])
+                formData.append('hotspot_id', hotspot_id)
+
+                const request = {
+                    method: 'POST',
+                    url: '/hotspot/api/upload',
+                    data: formData,
+                    callback: (r) => {
+                        log('这是回头给出的响应:', JSON.parse(r))
+                        const data = JSON.parse(r)
+                        const hotspot_path = data.path
+                        $('.hotspot-cover').attr('src', `/hotspot/cover/${hotspot_path}`)
+                    }
+                }
+                ajax(request)
+            })
+        }
+
+
+
+        const change = () => {
+            const element = $('.change')
+            element.on('click', function(e) {
+                const form = {
+                    hotspot_content: $('.markdown-body').html(),
+                    hotspot_title: $('.hotspot_title').val(),
+                    hotspot_id: $('.hotspot_id').val(),
+                    hotspot_type:$('.hotspot_type').val(),
+
+                }
+                const data = JSON.stringify(form)
+                const request = {
+                    method: 'POST',
+                    url: '/hotspot/api/update',
+                    contentType: 'application/json',
+                    data: data,
+                    callback: (r) => {
+                        log('这是回头给出的响应:', JSON.parse(r))
+                        const d = JSON.parse(r)
+                    }
+                }
+                ajax(request)
+            })
+        }
+
+        const add_pic_more = () => {
+            const element = $('.add-pic-one-button')
+            element.on('click', function(event) {
+                log('上传按钮被点击')
+                var formData = new FormData()
+                var file = e('.add-pic-one')
+                var multi_files = file.files
+                for (let file of multi_files) {
+                    formData.append('file', file)
+                }
+                const request = {
+                    method: 'POST',
+                    url: '/hotspot/api/addpics',
+                    data: formData,
+                    callback: (r) => {
+                        log('这是回头给出的响应:', JSON.parse(r))
+                        const datas = JSON.parse(r).path_list
+                        datas.forEach((filename) => {
+                            const tag = `<img class="img-responsive" src="/hotspot/cover/${filename}" width="600px"><br>`
+                            const current_val = $('.mark-test').val()
+                            $('textarea').val(current_val + tag)
+
+                        })
+
+                    }
+                }
+                ajax(request)
+            })
+        }
+
+
+        const test = () => {
+            upload()
+        }
+
+        const __main = () => {
+            test()
+            change()
+            add_pic_more()
+        }
+
+        __main()
+    </script>
+    </body>
+</html>
